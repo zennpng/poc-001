@@ -33,7 +33,7 @@ jobs:
           dockerfile: $(Pipeline.Workspace)/s/poc-001/app/Dockerfile
           tags: ${{ parameters.build-tag }}
 
-      - task: PublishPipelineArtifact@1
-        inputs:
-          artifactName: 'manifests'
-          path: 'manifests'
+      # - task: PublishPipelineArtifact@1
+      #   inputs:
+      #     artifactName: 'manifests'
+      #     path: 'manifests'
