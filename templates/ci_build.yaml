@@ -1,0 +1,39 @@
+parameters:
+  - name: build-tag
+    type: string
+    default: "$(Build.BuildId)"
+
+jobs:
+  - job: Build
+    workspace: 
+      clean: all
+    displayName: App Build
+    steps:
+      - checkout: self
+        
+        persistCredentials: true
+        path: $(Pipeline.Workspace)/s
+      
+      - bash: |
+          ls -R
+        displayName: List
+        workingDirectory: $(Pipeline.Workspace)/s
+
+      - task: Docker@2
+        displayName: Docker Login
+        inputs:
+          command: login
+          containerRegistry: docker.io
+
+      - task: Docker@2
+        displayName: Build and Push Application
+        inputs:
+          command: buildAndPush
+          repository: zennpzy/poc-001
+          dockerfile: $(Pipeline.Workspace)/s/poc-001/app/Dockerfile
+          tags: ${{ parameters.build-tag }}
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          artifactName: 'manifests'
+          path: 'manifests'

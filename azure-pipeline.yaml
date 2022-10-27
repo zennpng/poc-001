@@ -1,0 +1,20 @@
+trigger: 
+  branches:
+    include:
+      - master  
+pr: none
+
+stages:
+  - stage: Build 
+    displayName: App Build
+    pool:
+      name: 'Azure Pipelines'
+    jobs:
+      - template: templates/ci_build.yaml
+
+  - stage: Deploy
+    displayName: App Deployment
+    pool:
+      name: 'Azure Pipelines'
+    jobs:
+      - template: templates/cd_deployment.yaml
